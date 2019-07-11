@@ -1,8 +1,5 @@
-from base64 import b64encode
-
-import yaml
-
 import requests
+import yaml
 
 try:
     config = yaml.safe_load(open("../config.yml"))
@@ -20,8 +17,7 @@ LABELS = config.get("search_by")
 STATUS_FROM = config.get("status_from")
 STATUS_TO = config.get("status_to")
 
-DEFAULT_HEADERS = {"Authorization": "Basic %s" % b64encode(JIRA_LOGIN + ":" + JIRA_PASSWORD),
-                   "Content-Type": "application/json"}
+DEFAULT_HEADERS = {"Content-Type": "application/json"}
 
 STATUSES = {
     "PASSED": 1,
@@ -43,22 +39,27 @@ class ZapiCalls(object):
 
 
 def get_request(endpoint, params=None):
-    r = requests.get(BASE_JIRA_URL + endpoint, headers=DEFAULT_HEADERS, timeout=180, params=params)
+    r = requests.get(BASE_JIRA_URL + endpoint,
+                     auth=(JIRA_LOGIN, JIRA_PASSWORD),
+                     headers=DEFAULT_HEADERS,
+                     timeout=180,
+                     params=params)
     return handle_response_status(r)
 
 
 def post_request(endpoint, payload=None):
-    r = requests.post(BASE_JIRA_URL + endpoint, data=payload, headers=DEFAULT_HEADERS)
+    r = requests.post(BASE_JIRA_URL + endpoint, auth=(JIRA_LOGIN, JIRA_PASSWORD), data=payload, headers=DEFAULT_HEADERS)
     return handle_response_status(r)
 
 
 def put_request(endpoint, payload=None):
-    r = requests.put(BASE_JIRA_URL + endpoint, data=payload, headers=DEFAULT_HEADERS)
+    r = requests.put(BASE_JIRA_URL + endpoint, auth=(JIRA_LOGIN, JIRA_PASSWORD), data=payload, headers=DEFAULT_HEADERS)
     return handle_response_status(r)
 
 
 def delete_request(endpoint, params=None):
-    r = requests.delete(BASE_JIRA_URL + endpoint, headers=DEFAULT_HEADERS, params=params)
+    r = requests.delete(BASE_JIRA_URL + endpoint, auth=(JIRA_LOGIN, JIRA_PASSWORD), headers=DEFAULT_HEADERS,
+                        params=params)
     return handle_response_status(r)
 
 
