@@ -1,6 +1,6 @@
 from jira import JIRA
 
-import utils
+from jira_tools import utils
 
 jira_options = {'server': utils.BASE_JIRA_URL}
 jira = JIRA(options=jira_options, basic_auth=(utils.JIRA_LOGIN, utils.JIRA_PASSWORD))
@@ -22,6 +22,9 @@ def get_tickets_tested(sprint_number):
         tickets_tested.append(jira.search_issues("filter=%s" % sprint_filter).total)
 
     print(tickets_tested)
+
+def get_sprints(sprint_number):
+    pass
 
 
 if __name__ == '__main__':

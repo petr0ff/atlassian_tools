@@ -4,7 +4,7 @@ import logging
 import os
 import time
 
-import utils
+from jira_tools import utils
 
 if not os.path.exists(os.path.dirname("../log/")):
     try:
