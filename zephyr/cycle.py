@@ -4,7 +4,7 @@ import logging
 import os
 import time
 
-from jira_tools import utils
+from commons import utils
 
 if not os.path.exists(os.path.dirname("../log/")):
     try:
@@ -72,8 +72,7 @@ class Cycle(object):
         logging.info("Executions search criteria: %s" % labels)
         logging.info("Total executions in cycle: %s" % len(self._executions))
         for execution in self._executions:
-            if execution["status"]["name"] == status and set(labels).issubset(set(
-                    x.encode('UTF8') for x in execution["labels"])):
+            if execution["status"]["name"] == status and set(labels).issubset(set(execution["labels"])):
                 by_status.append(execution)
         logging.info("Total executions matching criteria: %s" % len(by_status))
         return by_status
